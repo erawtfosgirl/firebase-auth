@@ -4,10 +4,11 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export const Register = () => {
   const [userCredentials, setUserCredentials] = useState({});
+  const [error, setError] = useState("");
 
   const handleCredentials = (e) => {
+    setError("");
     setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
-    console.log(userCredentials);
   }
 
   const handleSubmit = (e) => {
@@ -15,15 +16,10 @@ export const Register = () => {
     createUserWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
+        setError(error.message);
       });
-
   }
 
   return (
@@ -69,6 +65,9 @@ export const Register = () => {
         >
           Submit
         </button>
+        {
+          error && <p className='mt-3 text-red-600'>{error}</p>
+        }
       </form>
 
     </>
