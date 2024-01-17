@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 import { auth } from '../firebase/config'
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUsers } from '../redux/usersSlice';
 
 export const Login = () => {
   const [userCredentials, setUserCredentials] = useState({});
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleCredentials = (e) => {
     setError("");
@@ -18,6 +21,7 @@ export const Login = () => {
     signInWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)
       .then((userCredential) => {
         console.log(userCredential.user);
+        dispatch(setUsers({ id: userCredential.user.uid, email: userCredential.user.email }));
         navigate("/home");
       })
       .catch((error) => {
