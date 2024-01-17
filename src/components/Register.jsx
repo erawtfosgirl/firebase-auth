@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { auth } from '../firebase/config'
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export const Register = () => {
   const [userCredentials, setUserCredentials] = useState({});
@@ -7,29 +8,28 @@ export const Register = () => {
   const handleCredentials = (e) => {
     setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
     console.log(userCredentials);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createUserWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
+      });
 
   }
 
   return (
     <>
-      <form className="mt-[100px] max-w-sm mx-auto border-2 rounded-lg border-solid p-5">
+      <form onSubmit={handleSubmit} className="mt-[100px] max-w-sm mx-auto border-2 rounded-lg border-solid p-5">
         <h1 className='font-bold text-xl mb-5 text-center'>SIGN UP</h1>
-        <div className="mb-5">
-          <label
-            htmlFor="fullname"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Full Name
-          </label>
-          <input
-            type="text"
-            name="fullname"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Name"
-            required
-            onChange={(e) => handleCredentials(e)}
-          />
-        </div>
         <div className="mb-5">
           <label
             htmlFor="email"
