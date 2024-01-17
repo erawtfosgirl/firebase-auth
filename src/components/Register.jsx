@@ -15,7 +15,7 @@ export const Register = () => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)
       .then((userCredential) => {
-        const user = userCredential.user;
+        console.log(userCredential.user);
       })
       .catch((error) => {
         setError(error.message);
