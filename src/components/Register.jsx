@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { auth } from '../firebase/config'
+import React, { useState } from "react";
+import { auth } from "../firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from "react-router-dom";
 
 export const Register = () => {
   const [userCredentials, setUserCredentials] = useState({});
@@ -11,24 +11,30 @@ export const Register = () => {
   const handleCredentials = (e) => {
     setError("");
     setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(auth, userCredentials.email, userCredentials.password)
+    createUserWithEmailAndPassword(
+      auth,
+      userCredentials.email,
+      userCredentials.password
+    )
       .then((userCredential) => {
-        console.log(userCredential.user);
         navigate("/");
       })
       .catch((error) => {
         setError(error.message);
       });
-  }
+  };
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="mt-[100px] max-w-sm mx-auto border-2 rounded-lg border-solid p-5">
-        <h1 className='font-bold text-xl mb-5 text-center'>SIGN UP</h1>
+      <form
+        onSubmit={handleSubmit}
+        className="mt-[100px] max-w-sm mx-auto border-2 rounded-lg border-solid p-5"
+      >
+        <h1 className="font-bold text-xl mb-5 text-center">SIGN UP</h1>
         <div className="mb-5">
           <label
             htmlFor="email"
@@ -68,14 +74,16 @@ export const Register = () => {
         >
           Submit
         </button>
-        {
-          error && <p className='my-3 text-red-600'>{error}</p>
-        }
+        {error && <p className="my-3 text-red-600">{error}</p>}
         <hr />
-        <div className='text-center mt-3 font-medium'>Already have an account? <NavLink to="/" className="text-blue-600">Login</NavLink></div>
+        <div className="text-center mt-3 font-medium">
+          Already have an account?{" "}
+          <NavLink to="/" className="text-blue-600">
+            Login
+          </NavLink>
+        </div>
         <NavLink></NavLink>
       </form>
-
     </>
-  )
-}
+  );
+};
