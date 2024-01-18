@@ -1,11 +1,9 @@
 import React, { useContext, useState } from "react";
-import { auth } from "../firebase/config";
-import { sendPasswordResetEmail } from "firebase/auth";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 
 export const Login = () => {
-  const { loginUser, user } = useContext(AuthContext);
+  const { loginUser, resetPassword, user } = useContext(AuthContext);
   const [userCredentials, setUserCredentials] = useState({});
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -28,7 +26,7 @@ export const Login = () => {
 
   const handlePasswordReset = () => {
     const email = prompt("Please enter your email:");
-    sendPasswordResetEmail(auth, email);
+    resetPassword(email);
     alert("Email sent! Check your inbox for password reset instructions");
   };
 
