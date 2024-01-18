@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { auth } from "../firebase/config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthProvider";
+import { updateProfile } from "firebase/auth";
 
 export const Register = () => {
+  const { createUser, user } = useContext(AuthContext);
   const [userCredentials, setUserCredentials] = useState({});
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -15,13 +16,12 @@ export const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(
-      auth,
-      userCredentials.email,
-      userCredentials.password
-    )
-      .then((userCredential) => {
-        navigate("/");
+    createUser(userCredentials.email, userCredentials.password)
+      .then((result) => {
+        updateProfile(result.user, {
+          displayName: userCredentials.fullname,
+        });
+        navigate("/login");
       })
       .catch((error) => {
         setError(error.message);
@@ -35,6 +35,22 @@ export const Register = () => {
         className="mt-[100px] max-w-sm mx-auto border-2 rounded-lg border-solid p-5"
       >
         <h1 className="font-bold text-xl mb-5 text-center">SIGN UP</h1>
+        <div className="mb-5">
+          <label
+            htmlFor="fullname"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Your full name
+          </label>
+          <input
+            type="text"
+            name="fullname"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="name"
+            required
+            onChange={(e) => handleCredentials(e)}
+          />
+        </div>
         <div className="mb-5">
           <label
             htmlFor="email"

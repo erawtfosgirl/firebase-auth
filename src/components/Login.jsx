@@ -26,7 +26,7 @@ export const Login = () => {
       userCredentials.password
     )
       .then((userCredential) => {
-        navigate("/home");
+        navigate("/");
       })
       .catch((error) => {
         setError(error.message);
