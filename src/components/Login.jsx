@@ -13,6 +13,10 @@ export const Login = () => {
     setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
   };
 
+  if (user) {
+    navigate("/");
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     loginUser(userCredentials.email, userCredentials.password)

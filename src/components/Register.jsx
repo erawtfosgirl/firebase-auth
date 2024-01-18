@@ -14,6 +14,8 @@ export const Register = () => {
     setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
   };
 
+ 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     createUser(userCredentials.email, userCredentials.password)
